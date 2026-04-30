@@ -1,0 +1,93 @@
+{
+  "entities": {
+    "Category": {
+      "title": "Category",
+      "description": "Tea categories (e.g., Original Tea, Milk Tea)",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "order": { "type": "number" }
+      },
+      "required": ["name"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Tea items on the menu",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "price": { "type": "number" },
+        "categoryId": { "type": "string" },
+        "description": { "type": "string" },
+        "image": { "type": "string" },
+        "isAvailable": { "type": "boolean" },
+        "options": {
+          "type": "object",
+          "properties": {
+            "allowIce": { "type": "boolean" },
+            "allowSugar": { "type": "boolean" }
+          }
+        }
+      },
+      "required": ["name", "price", "categoryId"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer order record",
+      "type": "object",
+      "properties": {
+        "customerName": { "type": "string" },
+        "customerPhone": { "type": "string" },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "productId": { "type": "string" },
+              "name": { "type": "string" },
+              "price": { "type": "number" },
+              "quantity": { "type": "number" },
+              "ice": { "type": "string" },
+              "sugar": { "type": "string" }
+            }
+          }
+        },
+        "totalPrice": { "type": "number" },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "preparing", "ready", "completed", "cancelled"]
+        },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["customerName", "items", "totalPrice", "status", "createdAt"]
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "Registry of admin users",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" }
+      },
+      "required": ["email"]
+    }
+  },
+  "firestore": {
+    "/categories/{categoryId}": {
+      "schema": "Category",
+      "description": "Collection of tea categories"
+    },
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Collection of tea products"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Collection of customer orders"
+    },
+    "/admins/{adminId}": {
+      "schema": "Admin",
+      "description": "Collection of authorized admin UIDs"
+    }
+  }
+}
